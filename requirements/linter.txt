@@ -1,0 +1,17 @@
+flake8==4.0.1
+# Stop except without specific exception type
+flake8-blind-except==0.2.1
+# Stops name collisions with Python built-in types
+flake8-builtins==1.5.3
+# Hunts down dead code
+flake8-eradicate==1.2.1
+# Enforces PEP8 naming conventions
+pep8-naming
+# Enforces good practice pytest conventions
+flake8-pytest-style
+# Strongly opinionated "this is probably a mistake" checker
+flake8-bugbear==22.4.25
+# Helps to write simpler list/dict/etc. comprehensions
+flake8-comprehensions==3.10.0
+# Strict opinionated formatter. Autofixes PEP8 breaks.
+flake8-black==0.3.3
