@@ -1,0 +1,13 @@
+[flake8]
+exclude = .git
+          *migrations*
+          build
+          *__pycache__*
+          .eggs
+          dist
+          env
+          venv
+          .local
+
+max-line-length = 120
+extend-ignore = E203,E501,E800,PT001,PT004,PT006,PT012,PT019,PT023
