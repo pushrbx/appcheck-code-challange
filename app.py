@@ -2,6 +2,7 @@ import json
 import os
 import pandas as pd
 import numpy as np
+from asgiref.wsgi import WsgiToAsgi
 from cvss import CVSS2
 from dateutil.parser import parse
 from flask import Flask, render_template, request
@@ -155,6 +156,9 @@ def load_data():
         with open("static/vulnerability_data.json", mode="r") as fp:
             data.update(json.load(fp))
             data_df = pd.read_json(json.dumps(data["items"]))
+
+
+asgi_app = WsgiToAsgi(app)
 
 
 if __name__ == "__main__":

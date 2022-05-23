@@ -11,7 +11,12 @@ Create a virtual environment with `python -m venv venv` and install dependencies
 ```bash
 python -m pip install -r ./requreiements/dev.txt
 ```
-Run the app:
+Run the app (development mode):
 ```bash
 python app.py
+```
+
+In production:
+```bash
+python -m hypercorn app:asgi_app
 ```

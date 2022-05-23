@@ -1,0 +1,15 @@
+**/.git*
+**/*.pyc
+**/*.pyo
+**/__pycache__
+__pycache__
+
+.idea
+.project
+.pydevproject
+.settings
+.editorconfig
+.github
+Jenkinsfile
+venv
+unx_venv
