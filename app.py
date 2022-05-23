@@ -97,7 +97,7 @@ def vulnerabilities():
     table_data = []
     filters = {
         "category": request.args.get("category"),
-        "impact": request.args.get("impact")
+        "impact": request.args.get("impact"),
     }
 
     # reset filters to None if they are empty
@@ -117,11 +117,20 @@ def vulnerabilities():
 
     # sorting by impact by default
     sort_by = request.args.get("sort_by", "impact")
-    if sort_by.replace("-", "") in ["title", "impact", "category", "type", "host", "created"]:
+    if sort_by.replace("-", "") in [
+        "title",
+        "impact",
+        "category",
+        "type",
+        "host",
+        "created",
+    ]:
         ascending = True
         if "-" in sort_by:
             ascending = False
-        haystack_df = haystack_df.sort_values(by=sort_by.replace("-", ""), ascending=ascending)
+        haystack_df = haystack_df.sort_values(
+            by=sort_by.replace("-", ""), ascending=ascending
+        )
 
     for index, row in haystack_df.iterrows():
         item = dict(row.to_dict())
@@ -134,7 +143,7 @@ def vulnerabilities():
         category_filter_options=data_df.category.unique(),
         impact_filter_options=data_df.impact.unique(),
         filters=filters,
-        sorting_by=sort_by
+        sorting_by=sort_by,
     )
 
 
