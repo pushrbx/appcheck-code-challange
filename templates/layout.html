@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>AppCheck App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="" name="description" />
+	<meta content="" name="author" />
+    <link href="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/css/bootstrap-reboot.min.css?1" rel="stylesheet" type="text/css" />
+    <link href="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/css/bootstrap.min.css?1" rel="stylesheet" type="text/css" />
+    <link href="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/css/bootstrap-grid.min.css?1" rel="stylesheet" type="text/css" />
+    <link href="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/css/font-awesome.min.css?1" rel="stylesheet" type="text/css" />
+    {% block styles %}{% endblock %}
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="fixed-header menu-pin">
+    <nav class="page-sidebar" style="transform: translate(210px)">
+        <div class="sidebar-header">
+            <img src="/static/img/logo_white.png" alt="logo" class="brand" width="78" height="22" />
+        </div>
+        <div class="sidebar-menu">
+            <ul class="menu-items">
+                {% include "sidebar-menu-items.html" %}
+            </ul>
+        </div>
+    </nav>
+    <div class="page-container">
+        <div class="header">
+            <div>
+                <div class="brand inline">
+                    <img src="/static/img/logo.png" alt="logo" class="brand" width="78" height="22" />
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="pull-right d-lg-block d-none m-r-25">
+                    <span>User1</span>
+                </div>
+                <a href="#" class="m-l-5 sm-no-margin d-inline-block">LOGOUT</a>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            {% block page_content %}{% endblock %}
+            <div class="container-fluid container-fixed-lg footer">
+                <div class="copyright sm-text-center">
+                    <p class="small-text no-margin pull-left sm-pull-reset">
+                        Footer copyright 2022
+                    </p>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,141 @@
+{% extends 'layout.html' %}
+{% block styles %}
+    <link href="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/vendor/jquery-datatable/media/css/dataTables.bootstrap.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/vendor/datatables-responsive/css/datatables.responsive.css"
+          rel="stylesheet" type="text/css" media="screen"/>
+{% endblock %}
+{% block page_content %}
+    <div class="content">
+        <div class="container-fluid container-fixed-lg">
+            <div class="inner">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Vulnerabilities
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="container-fluid container-fixed-lg bg-white">
+            <div class="card card-transparent">
+                <div class="card-header">
+                    <div class="card-title">Vulnerabilities data</div>
+                    <div class="pull-right">
+                        <div class="col-xs-12">
+                            <form action="/vulnerabilities" method="get" id="filter-form">
+                                <span class="m-r-10">Filters:&nbsp;</span>
+                                <label for="category-select">Category</label>
+                                <select id="category-select" name="category">
+                                    <option {% if filters.category is none %}selected="selected"{% endif %} value>--
+                                        select an option --
+                                    </option>
+                                    {% for option in category_filter_options %}
+                                        <option {% if filters.category == option %}selected="selected"{% endif %}>{{ option }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="impact-select">Impact</label>
+                                <select id="impact-select" name="impact">
+                                    <option {% if filters.impact is none %}selected="selected"{% endif %} value>--
+                                        select an option --
+                                    </option>
+                                    {% for option in impact_filter_options %}
+                                        <option {% if filters.impact == option %}selected="selected"{% endif %}>{{ option }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit">Apply</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="card-body">
+                    <div class="dataTables_wrapper">
+                        <div>
+                            <table id="vulnerabilities-data-table"
+                                   class="table table-hover table-responsive-block dataTable" role="grid">
+                                <thead>
+                                <tr role="row">
+                                    <th aria-controls="vulnerabilities-data-table"
+                                        class="{% if sorting_by == "title" %}sorting_asc{% elif sorting_by == "-title" %}sorting_desc{% else %}sorting{% endif %}"
+                                        data-sort-by="title">Title
+                                    </th>
+                                    <th aria-controls="vulnerabilities-data-table"
+                                        class="{% if sorting_by == "impact" %}sorting_asc{% elif sorting_by == "-impact" %}sorting_desc{% else %}sorting{% endif %}"
+                                        data-sort-by="impact">Impact
+                                    </th>
+                                    <th aria-controls="vulnerabilities-data-table"
+                                        class="{% if sorting_by == "type" %}sorting_asc{% elif sorting_by == "-type" %}sorting_desc{% else %}sorting{% endif %}"
+                                        data-sort-by="type">Type
+                                    </th>
+                                    <th aria-controls="vulnerabilities-data-table"
+                                        class="{% if sorting_by == "category" %}sorting_asc{% elif sorting_by == "-category" %}sorting_desc{% else %}sorting{% endif %}"
+                                        data-sort-by="category">Category
+                                    </th>
+                                    <th aria-controls="vulnerabilities-data-table"
+                                        class="{% if sorting_by == "host" %}sorting_asc{% elif sorting_by == "-host" %}sorting_desc{% else %}sorting{% endif %}"
+                                        data-sort-by="host">Host
+                                    </th>
+                                    <th aria-controls="vulnerabilities-data-table"
+                                        class="{% if sorting_by == "created" %}sorting_asc{% elif sorting_by == "-created" %}sorting_desc{% else %}sorting{% endif %}"
+                                        data-sort-by="created">Created
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in table_data %}
+                                    <tr>
+                                        <td class="v-align-middle">{{ item["title"] }}</td>
+                                        <td class="v-align-middle">{{ item["impact"] }}</td>
+                                        <td class="v-align-middle">{{ item["type"] }}</td>
+                                        <td class="v-align-middle">{{ item["category"] }}</td>
+                                        <td class="v-align-middle">{{ item["host"] }}</td>
+                                        <td class="v-align-middle">{{ item["created"].strftime('%Y-%m-%d') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/vendor/jquery/jquery-3.2.1.min.js"
+            type="text/javascript"></script>
+    <script src="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/vendor/bootstrap/js/bootstrap.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript"
+            src="https://static.pushrbx.net/file/whimsyshire/zbjhk/appcheck_app/vendor/datatables-responsive/js/lodash.min.js"></script>
+    <script>
+        (function ($, _) {
+            $(document).ready(function () {
+                $("#vulnerabilities-data-table th").click(function () {
+                    var sortBy = $(this).data("sort-by")
+                    var urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.has("sort_by") && urlParams.get("sort_by") === sortBy) {
+                        sortBy = "-" + sortBy;
+                    }
+                    if (!urlParams.has("sort_by") && sortBy === "impact") {
+                        sortBy = "-" + sortBy;
+                    }
+                    urlParams.set("sort_by", sortBy);
+                    window.location.href = "/vulnerabilities?" + urlParams.toString();
+                });
+                $("#filter-form").submit(function () {
+                    var urlParams = new URLSearchParams(window.location.search);
+                    _.forEach($(this).serializeArray(), function (item) {
+                        urlParams.set(item.name, item.value);
+                    });
+                    window.location.href = "/vulnerabilities?" + urlParams.toString();
+
+                    return false;
+                })
+            });
+        })(window.jQuery, window._)
+    </script>
+{% endblock %}
